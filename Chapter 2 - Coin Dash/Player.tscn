@@ -35,21 +35,17 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8.28549, 9.25313 )
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Area2D"]
 position = Vector2( 31.3983, 85.5986 )
 script = ExtResource( 13 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "hurt"
+animation = "run"
+frame = 3
 playing = true
 offset = Vector2( 0, -5 )
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
-[connection signal="body_entered" from="RigidBody2D" to="." method="_on_RigidBody2D_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]

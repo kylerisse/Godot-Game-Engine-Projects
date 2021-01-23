@@ -16,6 +16,8 @@ _global_script_class_icons={
 [application]
 
 config/name="Coin Dash"
+run/main_scene="res://Main.tscn"
+boot_splash/image="res://icon.png"
 config/icon="res://icon.png"
 
 [display]
