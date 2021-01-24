@@ -33,16 +33,17 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 8.28549, 9.25313 )
+extents = Vector2( 13.7729, 18.2621 )
 
 [node name="Player" type="Area2D"]
 position = Vector2( 31.3983, 85.5986 )
 script = ExtResource( 13 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
 animation = "run"
-frame = 3
+frame = 5
 playing = true
 offset = Vector2( 0, -5 )
 
