@@ -79,7 +79,7 @@ func game_over():
 
 func _on_PowerupTimer_timeout():
 	var p = Powerup.instance()
-	add_child(p)
+	$CoinContainer.add_child(p)
 	p.screensize = screensize
 	p.position = Vector2(rand_range(0, screensize.x),
 						 rand_range(0, screensize.y))
