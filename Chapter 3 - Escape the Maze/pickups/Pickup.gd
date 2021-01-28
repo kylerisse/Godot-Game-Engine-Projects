@@ -21,6 +21,9 @@ func init(_type, pos):
 	position = pos
 
 func pickup():
+	match type:
+		'coin':
+			Global.score += 1
 	$CollisionShape2D.disabled = true
 	$Tween.start()
 

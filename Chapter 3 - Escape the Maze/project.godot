@@ -16,7 +16,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Escape the Maze"
+run/main_scene="res://maps/StartScreen.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://maps/Global.gd"
 
 [display]
 

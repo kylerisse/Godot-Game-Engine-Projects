@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 
 # Declare member variables here. Examples:
@@ -14,3 +14,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Timer_timeout():
+	get_tree().change_scene(Global.start_screen)

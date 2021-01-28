@@ -56,10 +56,14 @@ func spawn_items():
 
 
 func _on_Player_win():
-	pass # Replace with function body.
+	Global.next_level()
 	
 func game_over():
-	pass
+	Global.game_over()
+
+func _on_Player_dead():
+	game_over()
+
 
 
 func _on_Player_grabbed_green_key():
