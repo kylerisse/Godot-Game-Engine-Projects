@@ -3,7 +3,7 @@
 [ext_resource path="res://characters/Character.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 18.3175, 23.7003 )
+extents = Vector2( 26.8466, 8.73161 )
 
 [node name="Character" type="Area2D"]
 position = Vector2( 73.1711, 71.9168 )
@@ -18,7 +18,6 @@ shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -1.28067, -1.52143 )
-animation = "down"
 speed_scale = 0.0
 playing = true
 

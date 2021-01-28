@@ -29,6 +29,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ScoreLabel" type="Label" parent="."]
+anchor_top = 6.618
+anchor_right = 25.475
+anchor_bottom = 8.718
+margin_left = 3.0
+margin_top = 109.917
+margin_bottom = 109.917
+custom_fonts/font = SubResource( 1 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true

@@ -113,9 +113,11 @@ animations = [ {
 script = ExtResource( 3 )
 speed = 1
 
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2( -2.58701, 10.7565 )
+
 [node name="AnimatedSprite" parent="." index="2"]
 position = Vector2( -2.82069, -9.7349 )
 frames = SubResource( 21 )
 animation = "up"
-frame = 2
 speed_scale = 1.0

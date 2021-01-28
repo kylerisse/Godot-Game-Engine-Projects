@@ -23,7 +23,13 @@ func init(_type, pos):
 func pickup():
 	match type:
 		'coin':
+			$CoinPickup.play()
 			Global.score += 1
+		'key_red':
+			$KeyPickup.play()
+			Global.score += 5
+		'star':
+			Global.score += 20
 	$CollisionShape2D.disabled = true
 	$Tween.start()
 
