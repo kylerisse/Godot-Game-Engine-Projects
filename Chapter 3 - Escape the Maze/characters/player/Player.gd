@@ -2,7 +2,8 @@ extends 'res://characters/Character.gd'
 
 signal moved
 signal dead
-signal grabbed_key
+signal grabbed_red_key
+signal grabbed_green_key
 signal win
 
 func _ready():
@@ -31,6 +32,8 @@ func _on_Player_area_entered(area):
 	if area.has_method('pickup'):
 		area.pickup()
 		if area.type == 'key_red':
-			emit_signal('grabbed_key')
+			emit_signal('grabbed_red_key')
+		if area.type == 'key_green':
+			emit_signal('grabbed_green_key')
 		if area.type == 'star':
 			emit_signal('win')

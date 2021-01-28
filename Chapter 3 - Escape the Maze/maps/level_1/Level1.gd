@@ -51,7 +51,7 @@ func spawn_items():
 #	pass
 
 
-func _on_Player_grabbed_key():
+func _on_Player_grabbed_red_key():
 	for cell in doors:
 		$Walls.set_cellv(cell, -1)
 
@@ -61,3 +61,7 @@ func _on_Player_win():
 	
 func game_over():
 	pass
+
+func _on_Player_dead():
+	pass # Replace with function body.
+
