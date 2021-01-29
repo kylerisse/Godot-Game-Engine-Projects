@@ -1,7 +1,13 @@
 extends RigidBody2D
 
+signal shoot
+
+export (PackedScene) var Bullet
+export (float) var fire_rate
 export (int) var engine_power
 export (int) var spin_power
+
+var can_shoot = true
 
 enum States {INIT, ALIVE, INVULNERABLE, DEAD}
 const INIT = 0
@@ -19,9 +25,17 @@ var rotation_dir = 0
 func _ready():
 	screensize = get_viewport().get_visible_rect().size
 	change_state(ALIVE)
+	$GunTimer.wait_time = fire_rate
 	
 func _process(_delta):
 	get_input()
+	
+func shoot():
+	if state == INVULNERABLE:
+		return
+	emit_signal('shoot', Bullet, $Muzzle.global_position, rotation)
+	can_shoot = false
+	$GunTimer.start()
 	
 func _integrate_forces(physics_state):
 	set_applied_torque(spin_power * rotation_dir)
@@ -61,3 +75,9 @@ func get_input():
 		rotation_dir += 1
 	if Input.is_action_pressed('rotate_left'):
 		rotation_dir -= 1
+	if Input.is_action_pressed('shoot') and can_shoot:
+		shoot()
+
+
+func _on_GunTimer_timeout():
+	can_shoot = true
