@@ -26,7 +26,7 @@ curve = SubResource( 1 )
 
 [node name="RockSpawn" type="PathFollow2D" parent="RockPath"]
 position = Vector2( -1179.61, -656.826 )
-rotation = 0.00278215
+rotation = 0.00275132
 
 [node name="Rocks" type="Node" parent="."]
 [connection signal="shoot" from="Player" to="." method="_on_Player_shoot"]
