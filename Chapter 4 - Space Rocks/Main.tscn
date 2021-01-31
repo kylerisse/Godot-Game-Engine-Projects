@@ -16,11 +16,13 @@ script = ExtResource( 3 )
 Rock = ExtResource( 4 )
 
 [node name="Background" type="Sprite" parent="."]
-scale = Vector2( 1.25, 1.25 )
+position = Vector2( 510.807, 305.833 )
+scale = Vector2( 0.562011, 0.623391 )
 texture = ExtResource( 2 )
 normal_map = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 504.3, 296.073 )
 
 [node name="RockPath" type="Path2D" parent="."]
 curve = SubResource( 1 )
@@ -32,4 +34,7 @@ rotation = 0.00275132
 [node name="Rocks" type="Node" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource( 5 )]
+[connection signal="dead" from="Player" to="." method="game_over"]
+[connection signal="lives_changed" from="Player" to="HUD" method="update_lives"]
 [connection signal="shoot" from="Player" to="." method="_on_Player_shoot"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

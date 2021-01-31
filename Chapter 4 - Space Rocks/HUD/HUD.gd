@@ -10,7 +10,7 @@ onready var lives_counter = [
 
 func show_message(message):
 	$MessageLabel.text = message
-	$MessageTimer.show()
+	$MessageLabel.show()
 	$MessageTimer.start()
 
 func update_score(value):
@@ -32,3 +32,4 @@ func _on_StartButton_pressed():
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
 	$MessageLabel.text = ''
+

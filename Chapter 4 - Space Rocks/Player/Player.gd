@@ -1,6 +1,8 @@
 extends RigidBody2D
 
 signal shoot
+signal lives_changed
+signal dead
 
 export (PackedScene) var Bullet
 export (float) var fire_rate
@@ -8,6 +10,7 @@ export (int) var engine_power
 export (int) var spin_power
 
 var can_shoot = true
+var lives = 0 setget set_lives
 
 enum States {INIT, ALIVE, INVULNERABLE, DEAD}
 const INIT = 0
@@ -26,7 +29,12 @@ func _ready():
 	screensize = get_viewport().get_visible_rect().size
 	change_state(ALIVE)
 	$GunTimer.wait_time = fire_rate
-	
+
+func start():
+	$Sprite.show()
+	self.lives = 3
+	change_state(ALIVE)
+
 func _process(_delta):
 	get_input()
 	
@@ -56,12 +64,19 @@ func change_state(new_state):
 	match new_state:
 		INIT:
 			$CollisionShape2D.disabled = true
+			$Sprite.modulate.a = 0.5
 		ALIVE:
 			$CollisionShape2D.disabled = false
+			$Sprite.modulate.a = 1.0
 		INVULNERABLE:
 			$CollisionShape2D.disabled = true
+			$Sprite.modulate.a = 0.5
+			$InvulnerabilityTimer.start()
 		DEAD:
 			$CollisionShape2D.disabled = true
+			$Sprite.hide()
+			linear_velocity = Vector2()
+			emit_signal('dead')
 	state = new_state
 
 func get_input():
@@ -78,6 +93,22 @@ func get_input():
 	if Input.is_action_pressed('shoot') and can_shoot:
 		shoot()
 
+func set_lives(value):
+	lives = value
+	emit_signal('lives_changed', lives)
 
 func _on_GunTimer_timeout():
 	can_shoot = true
+
+func _on_InvulnerabilityTimer_timeout():
+	change_state(ALIVE)
+
+func _on_Player_body_entered(body):
+	if body.is_in_group('rocks'):
+		body.explode()
+		$Explosion.play('explosion')
+		self.lives -= 1
+		if lives < 0:
+			change_state(DEAD)
+		else:
+			change_state(INVULNERABLE)
