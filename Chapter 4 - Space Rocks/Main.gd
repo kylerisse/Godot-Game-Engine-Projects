@@ -14,9 +14,9 @@ func new_game():
 	level = 0
 	score = 0
 	$HUD.update_score(score)
-	$Player.start()
 	$HUD.show_message("Get Ready!")
 	yield($HUD/MessageTimer, "timeout")
+	$Player.start()
 	playing = true
 	new_level()
 
@@ -24,7 +24,7 @@ func new_level():
 	level += 1
 	$HUD.show_message("Wave %s" % level)
 	for i in range(level):
-		spawn_rock(3)
+		spawn_rock(int(rand_range(2, 5)))
 
 func game_over():
 	playing = false
@@ -34,8 +34,6 @@ func _ready():
 	randomize()
 	screensize = get_viewport().get_visible_rect().size
 	$Player.screensize = screensize
-	for i in range(3):
-		spawn_rock(3)
 
 func _process(delta):
 	if playing and $Rocks.get_child_count() == 0:
@@ -66,3 +64,15 @@ func _on_Rock_exploded(size, radius, pos, vel):
 		var newpos = pos + dir * radius
 		var newvel = dir * vel.length() * 1.1
 		spawn_rock(size - 1, newpos, newvel)
+
+func _input(event):
+	if event.is_action_pressed('pause'):
+		if not playing:
+			return
+		get_tree().paused = not get_tree().paused
+	if get_tree().paused:
+		$HUD/MessageLabel.text = "Paused"
+		$HUD/MessageLabel.show()
+	else:
+		$HUD/MessageLabel.text = ""
+		$HUD/MessageLabel.hide()

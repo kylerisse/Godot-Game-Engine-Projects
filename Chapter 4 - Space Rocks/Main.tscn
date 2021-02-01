@@ -8,10 +8,11 @@
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -1179.61, -656.826, 0, 0, 0, 0, 1188.97, -650.319, 0, 0, 0, 0, 1188.97, 667.368, 0, 0, 0, 0, -1182.86, 664.114, 0, 0, 0, 0, -1179.61, -656.826 )
+"points": PoolVector2Array( 0, 0, 0, 0, -11.5894, -22.385, 0, 0, 0, 0, 1039.31, -22.385, 0, 0, 0, 0, 1042.56, 618.563, 0, 0, 0, 0, -8.33569, 634.831, 0, 0, 0, 0, -11.5894, -22.385 )
 }
 
 [node name="Main" type="Node"]
+pause_mode = 2
 script = ExtResource( 3 )
 Rock = ExtResource( 4 )
 
@@ -22,14 +23,13 @@ texture = ExtResource( 2 )
 normal_map = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 504.3, 296.073 )
+position = Vector2( 500, 420 )
 
 [node name="RockPath" type="Path2D" parent="."]
 curve = SubResource( 1 )
 
 [node name="RockSpawn" type="PathFollow2D" parent="RockPath"]
-position = Vector2( -1179.61, -656.826 )
-rotation = 0.00275132
+position = Vector2( -11.5894, -22.385 )
 
 [node name="Rocks" type="Node" parent="."]
 

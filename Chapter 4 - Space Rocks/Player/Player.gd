@@ -64,14 +64,16 @@ func change_state(new_state):
 	match new_state:
 		INIT:
 			$CollisionShape2D.disabled = true
-			$Sprite.modulate.a = 0.5
+			$Sprite.hide()
 		ALIVE:
 			$CollisionShape2D.disabled = false
 			$Sprite.modulate.a = 1.0
+			$Sprite.show()
 		INVULNERABLE:
 			$CollisionShape2D.disabled = true
 			$Sprite.modulate.a = 0.5
 			$InvulnerabilityTimer.start()
+			$Sprite.show()
 		DEAD:
 			$CollisionShape2D.disabled = true
 			$Sprite.hide()
@@ -104,9 +106,8 @@ func _on_InvulnerabilityTimer_timeout():
 	change_state(ALIVE)
 
 func _on_Player_body_entered(body):
-	if body.is_in_group('rocks'):
+	if body.is_in_group('rocks') and not state == INVULNERABLE:
 		body.explode()
-		$Explosion.play('explosion')
 		self.lives -= 1
 		if lives < 0:
 			change_state(DEAD)
