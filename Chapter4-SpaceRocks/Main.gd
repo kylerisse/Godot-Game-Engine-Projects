@@ -6,7 +6,7 @@ export (PackedScene) var Enemy
 var screensize = Vector2()
 
 var level = 0
-var score = 0
+var score = 0 setget set_score
 var playing = false
 
 
@@ -18,7 +18,7 @@ func new_game():
 		enemy.queue_free()
 	level = 0
 	score = 0
-	$HUD.update_score(score)
+	set_score(score)
 	$HUD.show_message("Get Ready!")
 	yield($HUD/MessageTimer, "timeout")
 	$Player.start()
@@ -39,6 +39,11 @@ func game_over():
 	$Music.stop()
 	playing = false
 	$HUD.game_over()
+
+func set_score(value):
+	if not $Player.state in ['INVULNERABLE', 'DEAD']:
+		score = value
+		$HUD.update_score(score)
 
 
 func _ready():
@@ -71,7 +76,12 @@ func spawn_rock(size, pos = null, vel = null):
 	r.connect('exploded', self, '_on_Rock_exploded')
 
 
+func on_Enemy_exploded():
+	self.score += 2
+
+
 func _on_Rock_exploded(size, radius, pos, vel):
+	self.score += 1
 	$ExplodeSound.play()
 	if size <= 1:
 		return
@@ -106,3 +116,4 @@ func _on_EnemyTimer_timeout():
 	$Enemies.add_child(e)
 	e.target = $Player
 	e.connect('shoot', self, '_on_Player_shoot')
+	e.connect('exploded', self, '_on_Enemy_exploded')

@@ -1,6 +1,7 @@
 extends Area2D
 
 signal shoot
+signal exploded
 
 export (PackedScene) var Bullet
 export (int) var speed = 150
