@@ -76,8 +76,8 @@ __meta__ = {
 }
 
 [node name="MessageLabel" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
+anchor_left = 0.500977
+anchor_right = 0.500977
 margin_left = -512.0
 margin_top = 150.0
 margin_right = 512.0

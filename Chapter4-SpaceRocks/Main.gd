@@ -11,8 +11,11 @@ var playing = false
 
 
 func new_game():
+	$Music.play()
 	for rock in $Rocks.get_children():
 		rock.queue_free()
+	for enemy in $Enemies.get_children():
+		enemy.queue_free()
 	level = 0
 	score = 0
 	$HUD.update_score(score)
@@ -26,13 +29,14 @@ func new_game():
 func new_level():
 	level += 1
 	$HUD.show_message("Wave %s" % level)
-	for i in range(level):
-		spawn_rock(int(rand_range(2, 5)))
+	for _i in range(level):
+		spawn_rock(int(rand_range(2, 3)))
 	$EnemyTimer.wait_time = rand_range(5, 10)
 	$EnemyTimer.start()
 
 
 func game_over():
+	$Music.stop()
 	playing = false
 	$HUD.game_over()
 
@@ -43,7 +47,7 @@ func _ready():
 	$Player.screensize = screensize
 
 
-func _process(delta):
+func _process(_delta):
 	if playing and $Rocks.get_child_count() == 0:
 		new_level()
 
@@ -68,6 +72,7 @@ func spawn_rock(size, pos = null, vel = null):
 
 
 func _on_Rock_exploded(size, radius, pos, vel):
+	$ExplodeSound.play()
 	if size <= 1:
 		return
 	for offset in [-1, 1]:
@@ -82,18 +87,22 @@ func _input(event):
 		if not playing:
 			return
 		get_tree().paused = not get_tree().paused
-	if get_tree().paused:
-		$HUD/MessageLabel.text = "Paused"
-		$HUD/MessageLabel.show()
-	else:
-		$HUD/MessageLabel.text = ""
-		$HUD/MessageLabel.hide()
+		if get_tree().paused:
+			$HUD/MessageLabel.text = "Paused"
+			$HUD/MessageLabel.show()
+		else:
+			$HUD/MessageLabel.text = ""
+			$HUD/MessageLabel.hide()
+	if event.is_action_pressed('music'):
+		if $Music.playing:
+			$Music.stop()
+		else:
+			$Music.play()
 
 
 func _on_EnemyTimer_timeout():
+	$EnemySound.play()
 	var e = Enemy.instance()
-	add_child(e)
+	$Enemies.add_child(e)
 	e.target = $Player
 	e.connect('shoot', self, '_on_Player_shoot')
-	$EnemyTimer.wait_time = rand_range(20, 40)
-	$EnemyTimer.start()

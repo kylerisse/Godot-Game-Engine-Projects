@@ -8,6 +8,7 @@ radius = 3.00257
 height = 13.1254
 
 [node name="EnemyBullet" type="Area2D"]
+pause_mode = 1
 script = ExtResource( 1 )
 speed = 400
 

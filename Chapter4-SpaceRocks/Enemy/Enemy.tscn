@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/enemy_saucer.png" type="Texture" id=1]
 [ext_resource path="res://Explosion/Explosion.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Enemy/Enemy.gd" type="Script" id=3]
 [ext_resource path="res://EnemyPaths/EnemyPaths.tscn" type="PackedScene" id=4]
 [ext_resource path="res://EnemyBullet/EnemyBullet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/sounds/synthetic_thunder_short.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sounds/enemy_laser.wav" type="AudioStream" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "flash"
@@ -40,14 +42,33 @@ tracks/0/keys = {
 "values": [ 360.0, 0.0 ]
 }
 
+[sub_resource type="Animation" id=4]
+resource_name = "shooting"
+length = 0.25
+step = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.08, 0.121, 0.161, 0.201, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.929412, 0.980392, 0.0509804, 1 ), Color( 1, 1, 1, 1 ), Color( 0.929412, 0.980392, 0.0509804, 1 ), Color( 1, 1, 1, 1 ), Color( 0.929412, 0.980392, 0.0509804, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [sub_resource type="CircleShape2D" id=3]
 radius = 35.6969
 
 [node name="Enemy" type="Area2D" groups=[
 "enemies",
 ]]
+pause_mode = 1
 script = ExtResource( 3 )
 Bullet = ExtResource( 5 )
+speed = 125
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = 6.28319
@@ -58,7 +79,9 @@ frame = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "rotate"
 anims/flash = SubResource( 1 )
+"anims/flash 2" = SubResource( 1 )
 anims/rotate = SubResource( 2 )
+anims/shooting = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -69,10 +92,18 @@ position = Vector2( 9.67911, 0.716972 )
 frame = 0
 
 [node name="GunTimer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 2.5
 autostart = true
 
 [node name="EnemyPaths" parent="." instance=ExtResource( 4 )]
+
+[node name="ShootSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -10.0
+
+[node name="ExplodeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -10.0
 [connection signal="body_entered" from="." to="." method="_on_Enemy_body_entered"]
 [connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
 [connection signal="timeout" from="GunTimer" to="." method="_on_GunTimer_timeout"]

@@ -43,10 +43,11 @@ func _process(_delta):
 
 
 func shoot():
-	if state == INVULNERABLE:
+	if state in [INVULNERABLE, DEAD]:
 		return
 	emit_signal('shoot', Bullet, $Muzzle.global_position, rotation)
 	can_shoot = false
+	$LaserSound.play()
 	$GunTimer.start()
 
 
@@ -71,6 +72,7 @@ func change_state(new_state):
 		INIT:
 			$CollisionShape2D.disabled = true
 			$Sprite.hide()
+			$Exhaust.emitting = false
 		ALIVE:
 			$CollisionShape2D.disabled = false
 			$Sprite.modulate.a = 1.0
@@ -81,10 +83,12 @@ func change_state(new_state):
 			$InvulnerabilityTimer.start()
 			$Sprite.show()
 		DEAD:
+			$EngineSound.stop()
 			$CollisionShape2D.disabled = true
 			$Sprite.hide()
 			linear_velocity = Vector2()
 			emit_signal('dead')
+			$Exhaust.emitting = false
 	state = new_state
 
 
@@ -93,7 +97,13 @@ func get_input():
 	if state in [DEAD, INIT]:
 		return
 	if Input.is_action_pressed('thrust'):
+		$Exhaust.emitting = true
 		thrust = Vector2(engine_power, 0)
+		if not $EngineSound.playing:
+			$EngineSound.play()
+	else:
+		$EngineSound.stop()
+		$Exhaust.emitting = false
 	rotation_dir = 0
 	if Input.is_action_pressed('rotate_right'):
 		rotation_dir += 1
@@ -109,7 +119,7 @@ func set_lives(value):
 
 
 func explode():
-	if not state == INVULNERABLE:
+	if not state in [INVULNERABLE, DEAD]:
 		self.lives -= 1
 		if lives < 0:
 			change_state(DEAD)
@@ -126,6 +136,6 @@ func _on_InvulnerabilityTimer_timeout():
 
 
 func _on_Player_body_entered(body):
-	if body.is_in_group('rocks') and not state == INVULNERABLE:
+	if body.is_in_group('rocks') and not state in [INVULNERABLE, DEAD]:
 		body.explode()
 		explode()

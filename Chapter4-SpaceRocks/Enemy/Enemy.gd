@@ -11,13 +11,17 @@ var target = null
 
 
 func shoot():
+	$ShootSound.play()
 	var dir = target.global_position - global_position
 	dir = dir.rotated(rand_range(-0.1, 0.1)).angle()
 	emit_signal('shoot', Bullet, global_position, dir)
 
 
 func shoot_pulse(n, delay):
-	for i in range(n):
+	$AnimationPlayer.play('shooting')
+	yield($AnimationPlayer, "animation_finished")
+	$AnimationPlayer.play('rotate')
+	for _i in range(n):
 		shoot()
 		yield(get_tree().create_timer(delay), 'timeout')
 
@@ -32,6 +36,7 @@ func take_damage(amount):
 
 
 func explode():
+	$ExplodeSound.play()
 	speed = 0
 	$GunTimer.stop()
 	$CollisionShape2D.disabled = true
@@ -60,10 +65,12 @@ func _on_Explosion_animation_finished():
 
 
 func _on_GunTimer_timeout():
-	shoot_pulse(randi() % 4, 0.15)
+	shoot_pulse(randi() % 3 + 1, 0.3)
 
 
 func _on_Enemy_body_entered(body):
-	if body.name == 'Player' or body.is_in_group('rocks'):
+	if body.name == 'Player':
 		body.explode()
-	explode()
+	if body.is_in_group('rocks'):
+		body.explode()
+	take_damage(1)
