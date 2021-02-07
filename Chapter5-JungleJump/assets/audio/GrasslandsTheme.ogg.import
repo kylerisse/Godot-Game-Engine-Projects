@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/GrasslandsTheme.ogg-aad8b755216434884690f66f3eee9f34.oggstr"
+
+[deps]
+
+source_file="res://assets/audio/GrasslandsTheme.ogg"
+dest_files=[ "res://.import/GrasslandsTheme.ogg-aad8b755216434884690f66f3eee9f34.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
